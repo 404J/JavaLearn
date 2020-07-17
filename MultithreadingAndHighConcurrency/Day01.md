@@ -45,28 +45,117 @@
     对同一个数值进行操作，得到与期望结果不同
 
     ```java
-    code
+    public class Test {
+        private int number = 0;
+
+        public int getNumber() {
+            return this.number;
+        }
+
+        public void addOne() {
+            this.number++;
+        }
+
+        public static void main(String[] args) throws InterruptedException {
+            int threadCount = 1000;
+            ExecutorService executorService = Executors.newCachedThreadPool();
+            CountDownLatch countDownLatch = new CountDownLatch(threadCount);
+            Test t1 = new Test();
+            for (int i = 0; i < threadCount; i++) {
+                executorService.execute(() -> {
+                    t1.addOne();
+                    countDownLatch.countDown();
+                });
+            }
+            countDownLatch.await();
+            System.out.println(t1.getNumber());
+            executorService.shutdown();
+        }
+    }
     ```
 
 - 例2
     一个同步方法执行的时候，另一个非同步方法可以执行。脏读例子实现。
 
     ```java
-    code
+    public class Test {
+        private int number = 0;
+
+        public int getNumber() {
+            return this.number;
+        }
+
+        public synchronized void addOne() {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            this.number ++;
+        }
+        public static void main(String[] args) {
+            Test t1 = new Test();
+            new Thread(() -> {
+                t1.addOne();
+            }).start();
+            new Thread(() -> {
+                System.out.println(t1.getNumber());
+            }).start();
+        }
+    }
     ```
 
 - 例3
     可重入锁。即同步方法F1可调用同步方法F2
 
     ```java
-    code
+    public class Test {
+
+        public synchronized void m1() {
+            System.out.println("this is method m1");
+            this.m2();
+        }
+
+        public synchronized void m2() {
+            System.out.println("this is method m2");
+        }
+        public static void main(String[] args) {
+            Test t1 = new Test();
+            t1.m1();
+        }
+    }
     ```
 
 - 例4
     锁与异常，同步方法中产生异常将会释放锁，其他等待获得锁的线程将会“乱入”
 
     ```java
-    code
+    public class Test {
+        private int count = 0;
+        public synchronized void m() {
+            while (true) {
+                count ++;
+                System.out.println(count);
+                if(count == 10) {
+                    System.out.println(Thread.currentThread().getName());
+                    int i = 1 / 0;
+                }
+                if(count == 100) {
+                    System.out.println(Thread.currentThread().getName());
+                    break;
+                }
+            }
+        }
+
+        public static void main(String[] args) {
+            Test t1 = new Test();
+            for (int i = 0; i < 2; i++) {
+                new Thread(() -> {
+                    t1.m();
+                }).start();
+            }
+        }
+    }
     ```
 
 - JVM锁的实现

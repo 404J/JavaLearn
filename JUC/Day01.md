@@ -31,7 +31,7 @@
 
 - Blocked
 
-- Teminated
+- Terminated
 
 ## synchronized 关键字
 
@@ -61,7 +61,7 @@
             ExecutorService executorService = Executors.newCachedThreadPool();
             CountDownLatch countDownLatch = new CountDownLatch(threadCount);
             Test t1 = new Test();
-            for (int i = 0; i < threadCount; i++) {
+            for (int i = 0; i < threadCount; i ++) {
                 executorService.execute(() -> {
                     t1.addOne();
                     countDownLatch.countDown();
@@ -158,4 +158,7 @@
     }
     ```
 
-- JVM锁的实现
+- JVM中 synchronized 锁的实现优化
+    1. 当只有一个线程时候，在 Object 的 markword 上记录线程 ID (偏向锁)
+    2. 如果有多个线程争锁，升级为 自旋锁，自旋锁会占用 CPU。
+    3. 自旋10次后，升级为 重量锁 (向操作系统申请锁)

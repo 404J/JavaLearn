@@ -1,19 +1,29 @@
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Test {
-  private AtomicInteger count = new AtomicInteger(0);
-  void m() {
-    for (int i = 0; i < 10000; i++) {
-      count.addAndGet(1);
-    }
-  }
-
   public static void main(String[] args) throws InterruptedException {
-    Test t = new Test();
-    for (int i = 0; i < 10; i++) {
-      new Thread(t::m).start();
+    int playerCount = 10;
+    CountDownLatch begin = new CountDownLatch(1);
+    CountDownLatch end = new CountDownLatch(playerCount);
+
+    for (int i = 0; i < playerCount; i++) {
+      int number = i;
+      new Thread(() -> {
+        try {
+          begin.await();
+          System.out.println("Player-" + number + " arrived!");
+          end.countDown();
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+
+      }).start();
     }
-    Thread.sleep(100);
-    System.out.println(t.count);
+    System.out.println("Game begin!");
+    begin.countDown();
+    end.await();
+    System.out.println("Game over!");
   }
 }

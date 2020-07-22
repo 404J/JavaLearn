@@ -1,29 +1,21 @@
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.Semaphore;
 
 public class Test {
-  public static void main(String[] args) throws InterruptedException {
-    int playerCount = 10;
-    CountDownLatch begin = new CountDownLatch(1);
-    CountDownLatch end = new CountDownLatch(playerCount);
+  static Semaphore semaphore = new Semaphore(3);
 
-    for (int i = 0; i < playerCount; i++) {
-      int number = i;
-      new Thread(() -> {
-        try {
-          begin.await();
-          System.out.println("Player-" + number + " arrived!");
-          end.countDown();
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
-
-      }).start();
+  static void getPermit() {
+    try {
+      semaphore.acquire();
+      Thread.sleep(100);
+    } catch (InterruptedException e) {
+    } finally {
+      semaphore.release();
     }
-    System.out.println("Game begin!");
-    begin.countDown();
-    end.await();
-    System.out.println("Game over!");
+    System.out.println("Competitor-" + Thread.currentThread().getName() + " get permit !");
+  }
+  public static void main(String[] args) {
+    for (int i = 0; i < 10; i++) {
+      new Thread(Test::getPermit).start();
+    }
   }
 }

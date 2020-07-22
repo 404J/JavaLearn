@@ -109,7 +109,23 @@
     公交车发车
 
     ```java
-    code
+    public class Test {
+        public static void main(String[] args) throws InterruptedException {
+            CyclicBarrier cyclicBarrier = new CyclicBarrier(10, () -> {
+                System.out.println("人满，发车！");
+            });
+            for (int i = 0; i < 100; i++) {
+                new Thread(() -> {
+                    System.out.println(Thread.currentThread().getName());
+                    try {
+                        cyclicBarrier.await();
+                    } catch (InterruptedException | BrokenBarrierException e) {
+                        e.printStackTrace();
+                    }
+                }).start();;
+            }
+        }
+    }
     ```
 
 ## Phaser
@@ -118,7 +134,65 @@
     篮球比赛的淘汰赛阶段
 
     ```java
-    code
+    public class Test {
+        static Phaser phaser = new GamePhaser();
+
+        static class GamePhaser extends Phaser {
+            @Override
+            protected boolean onAdvance(int phase, int registeredParties) {
+                switch (phase) {
+                    case 0:
+                        System.out.println("semifinals " + registeredParties);
+                        System.out.println();
+                        return false;
+                    case 1:
+                        System.out.println("finals " + registeredParties);
+                        System.out.println();
+                        return true;
+                    default:
+                        return true;
+                }
+            }
+        }
+
+        static class Gamer extends Thread {
+            String gamerName;
+
+            public Gamer(String gamerName) {
+                this.gamerName = gamerName;
+            }
+            void playSemifinals() {
+                System.out.println(gamerName + " is playing in semifinals");
+                phaser.arriveAndAwaitAdvance();
+            }
+
+            void playFinals() {
+                if(gamerName.equals("CHINA") || gamerName.equals("JAPAN")) {
+                    System.out.println(gamerName + " is playing in finals");
+                    phaser.arriveAndAwaitAdvance();
+                } else {
+                    phaser.arriveAndDeregister();
+                }
+                if (gamerName.equals("CHINA")) {
+                    System.out.println("The winner is " + gamerName);
+                }
+            }
+
+            @Override
+            public void run() {
+                playSemifinals();
+                playFinals();
+            }
+        }
+
+        public static void main(String[] args) throws InterruptedException {
+            phaser.bulkRegister(4);
+            String[] gamers = {"USA", "CHINA", "UK", "JAPAN"};
+            for (String gamer : gamers) {
+                new Gamer(gamer).start();
+            }
+        }
+    }
     ```
 
 ## ReadWriteLock (共享锁，排他锁)
@@ -127,7 +201,40 @@
     读锁之间为共享锁，写锁和写锁/读锁和写锁之间为排他锁
 
     ```java
-    code
+    public class Test {
+        static ReadWriteLock lock = new ReentrantReadWriteLock();
+        static Lock writeLock = lock.writeLock();
+        static Lock readLock = lock.readLock();
+
+        static void write() {
+            try {
+                writeLock.lock();
+                Thread.sleep(500);
+                System.out.println("Thread " + Thread.currentThread().getName() + " is writing");
+            } catch (InterruptedException e) {
+            } finally {
+                writeLock.unlock();
+            }
+        }
+
+        static void read() {
+            try {
+                readLock.lock();
+                Thread.sleep(500);
+                System.out.println("Thread " + Thread.currentThread().getName() + " is reading");
+            } catch (InterruptedException e) {
+            } finally {
+                readLock.unlock();
+            }
+        }
+
+        public static void main(String[] args) {
+            for (int i = 0; i < 5; i++) {
+                new Thread(Test::write).start();;
+                new Thread(Test::read).start();;
+            }
+        }
+    }
     ```
 
 ## Semaphore
@@ -136,5 +243,23 @@
     限流
 
     ```java
-    code
+    public class Test {
+        static Semaphore semaphore = new Semaphore(3);
+
+        static void getPermit() {
+            try {
+                semaphore.acquire();
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+            } finally {
+                semaphore.release();
+            }
+            System.out.println("Competitor-" + Thread.currentThread().getName() + " get permit !");
+        }
+        public static void main(String[] args) {
+            for (int i = 0; i < 10; i++) {
+                new Thread(Test::getPermit).start();
+            }
+        }
+    }
     ```

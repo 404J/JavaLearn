@@ -211,16 +211,124 @@
   ```
 
 - 例3
-  写一个固定容量同步容器，拥有put和get方法，以及getCount方法，能够支持2个生产者线程以及10个消费者线程的阻塞调用
+  写一个固定容量同步容器，拥有put和get方法，能够支持2个生产者线程以及10个消费者线程的阻塞调用
 
   - wait/notify 的实现
 
   ```java
-  code
+  public class Test<T> {
+    LinkedList<T> list = new LinkedList<T>();
+    int MAX = 10;
+    int count = 0;
+
+    public synchronized void produce(T t) throws InterruptedException {
+      while (MAX == list.size()) {
+        wait();
+      }
+      list.add(t);
+      count++;
+      notifyAll();
+    }
+
+    public synchronized T consume() throws InterruptedException {
+      while (0 == list.size()) {
+        wait();
+      }
+      T t = list.removeFirst();
+      count--;
+      notifyAll();
+      return t;
+    }
+
+    public static void main(String[] args) {
+      Test<String> t = new Test<String>();
+      for (int i = 0; i < 2; i++) {
+        new Thread(() -> {
+          while (true) {
+            try {
+              t.produce("Item" + Math.random());
+            } catch (InterruptedException e) {
+            }
+            TimeUnit.sleep(1);
+          }
+        }, "Producer").start();
+      }
+
+      for (int i = 0; i < 10; i++) {
+        new Thread(() -> {
+          while (true) {
+            try {
+              System.out.println(t.consume() + " is consumed");
+            } catch (InterruptedException e) {
+            }
+            TimeUnit.sleep(1);
+          }
+        }, "Consumer").start();
+      }
+    }
+  }
   ```
 
   - ReentrantLock / Condition 的实现，一个Condition为一个等待队列
 
   ```java
-  code
+  public class Test<T> {
+    LinkedList<T> list = new LinkedList<T>();
+    Lock lock = new ReentrantLock();
+    Condition producer = lock.newCondition();
+    Condition consumer = lock.newCondition();
+    int MAX = 10;
+    int count = 0;
+
+    public void produce(T t) throws InterruptedException {
+      lock.lock();
+      while (MAX == list.size()) {
+        producer.await();
+      }
+      list.add(t);
+      count++;
+      consumer.signalAll();
+      lock.unlock();
+    }
+
+    public T consume() throws InterruptedException {
+      lock.lock();
+      while (0 == list.size()) {
+        consumer.await();
+      }
+      T t = list.removeFirst();
+      count--;
+      producer.signalAll();
+      lock.unlock();
+      return t;
+
+    }
+
+    public static void main(String[] args) {
+      Test<String> t = new Test<String>();
+      for (int i = 0; i < 2; i++) {
+        new Thread(() -> {
+          while (true) {
+            try {
+              t.produce("Item" + Math.random());
+            } catch (InterruptedException e) {
+            }
+            TimeUnit.sleep(1);
+          }
+        }, "Producer").start();
+      }
+
+      for (int i = 0; i < 10; i++) {
+        new Thread(() -> {
+          while (true) {
+            try {
+              System.out.println(t.consume() + " is consumed");
+            } catch (InterruptedException e) {
+            }
+            TimeUnit.sleep(1);
+          }
+        }, "Consumer").start();
+      }
+    }
+  }
   ```

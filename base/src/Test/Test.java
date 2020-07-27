@@ -1,16 +1,7 @@
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import sun.nio.ch.DirectBuffer;
 
-public class Test<T> {
-
+public class Test {
   public static void main(String[] args) {
-    Lock lock = new ReentrantLock();
-    new Thread(() -> {
-      lock.lock();
-    }).start();
-    TimeUnit.sleep(1);
-    lock.lock();
-
-    lock.unlock();
+    
   }
 }

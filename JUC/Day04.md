@@ -3,7 +3,7 @@
 ## LockSupport
 
 - 例1
-  LockSupport 实现使某个线程阻塞/放行
+  LockSupport 实现使某个线程阻塞/放行, unpark 可以在 park 之前运行，不同于 notify 和 wait
 
   ```java
   public class Test {

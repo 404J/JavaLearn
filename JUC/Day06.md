@@ -1,16 +1,11 @@
 # Day06
 
-## HashTable/HashMap/ConcurrentHashMap 存取对比
-
-## 线程安全的容器
+## BlockingQueue 阻塞队列
 
 - 例1
-  多个售票员同时进行买票
+  实现生产者消费者, put / take 为阻塞方法
 
   ```java
   code
   ```
 
-## CopyOnWriteList 和 ArrayList 对比
-
-## BlockQueue

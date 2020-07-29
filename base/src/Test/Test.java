@@ -1,23 +1,22 @@
-import java.util.concurrent.locks.LockSupport;
-
 public class Test {
   static Thread t1, t2;
+  static volatile boolean flag = true;
   public static void main(String[] args) throws InterruptedException {
     char[] alphabets = "ABCDEF".toCharArray();
-    char[] numbers = "12345".toCharArray();
+    char[] numbers = "123456".toCharArray();
     
     t1 = new Thread(() -> {
       for (char c : alphabets) {
+        while(flag) {}
         System.out.println(c);
-        LockSupport.unpark(t2);
-        LockSupport.park();
+        flag = true;
       }
     });
     t2 = new Thread(() -> {
       for (char c : numbers) {
-        LockSupport.park();
+        while(!flag) {}
         System.out.println(c);
-        LockSupport.unpark(t1);
+        flag = false;
       }
     });
     t1.start();

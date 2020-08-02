@@ -39,18 +39,27 @@
 
 ### DelayQueue 按时间进行任务调度
 
-- 例2
-
-  ```java
-  code
-  ```
-
-### SynchronusQueue 用于一对一个线程交换数据
+### SynchronusQueue 用于一对一个线程交换数据，SynchronusQueue 内部不维护存储空间，直接交付
 
 - 例3
 
   ```java
-  code
+  public class Test {
+    public static void main(String[] args) throws InterruptedException {
+      SynchronousQueue<Object> sQueue = new SynchronousQueue<>();
+      Object o = new Object();
+      new Thread(() -> {
+        try {
+          TimeUnit.sleep(2);
+          sQueue.put(o);
+          System.out.println("put");
+        } catch (InterruptedException e) {
+        }
+      }).start();
+      sQueue.take();
+      System.out.println("take");
+    }
+  }
   ```
 
 ### TransferQueue 用于一对多个线程交换数据
@@ -58,5 +67,17 @@
 - 例4
 
   ```java
-  code
+  public class Test {
+    public static void main(String[] args) throws InterruptedException {
+      LinkedTransferQueue<Object> lQueue = new LinkedTransferQueue<>();
+      Object o = new Object();
+      new Thread(() -> {
+        try {
+          System.out.println(Thread.currentThread().getName() + lQueue.take());
+        } catch (InterruptedException e) {
+        }
+      }, "t2").start();
+      lQueue.transfer(o);
+    }
+  }
   ```

@@ -151,12 +151,81 @@
   BlockingQueue 实现
 
   ```java
-  code
+  public class Test {
+    static Thread t1, t2;
+
+    public static void main(String[] args) throws InterruptedException {
+      char[] alphabets = "ABCDEF".toCharArray();
+      char[] numbers = "123456".toCharArray();
+      BlockingQueue<Object> bQueue1 = new LinkedBlockingQueue<>(1);
+      BlockingQueue<Object> bQueue2 = new LinkedBlockingQueue<>(1);
+      Object o = new Object();
+
+      t1 = new Thread(() -> {
+        for (char c : alphabets) {
+          try {
+            System.out.println(c);
+            bQueue1.put(o);
+            bQueue2.take();
+          } catch (InterruptedException e) {
+          }
+        }
+      });
+      t2 = new Thread(() -> {
+        for (char c : numbers) {
+          try {
+            bQueue1.take();
+            System.out.println(c);
+            bQueue2.put(o);
+          } catch (InterruptedException e) {
+          }
+        }
+      });
+      t1.start();
+      t2.start();
+    }
+  }
   ```
 
-- 例5
-  semaphore 实现
+- 例6
+  TransferQueue 实现
 
   ```java
-  code
+  public class Test {
+    static Thread t1, t2;
+    public static void main(String[] args) throws Exception {
+    char[] alphabets = "ABCDEF".toCharArray();
+      char[] numbers = "123456".toCharArray();
+      LinkedTransferQueue<Object> lQueue = new LinkedTransferQueue<>();
+
+      t1 = new Thread(() -> {
+        for (char c : alphabets) {
+          try {
+            System.out.println(lQueue.take());
+            lQueue.transfer(c);
+          } catch (Exception e) {
+          }
+        }
+      });
+      t2 = new Thread(() -> {
+        for (char c : numbers) {
+          try {
+            lQueue.transfer(c);
+            System.out.println(lQueue.take());
+          } catch (Exception e) {
+          }
+        }
+      });
+      t1.start();
+      t2.start();
+    }
+  }
   ```
+
+## Callable, 类似于 Runnable, 但是 call 方法有返回值
+
+## Future, 接收 Callable 的返回
+
+## FutureTask, Future + Runnable
+
+## CompletableFuture, 任务管理器, 类似 js 中的 Promise

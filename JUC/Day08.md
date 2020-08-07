@@ -2,7 +2,7 @@
 
 ## Executor --> ExecutorService
 
-## Executors 线程工厂
+## Executors 线程池工厂，生产各种 ExecutorService
 
 ## ThreadPoolExecutor, 只有一个任务队列
 

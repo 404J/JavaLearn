@@ -39,7 +39,7 @@
 
 ### DelayQueue 按时间进行任务调度
 
-### SynchronusQueue 用于一对一个线程交换数据，SynchronusQueue 内部不维护存储空间，直接交付
+### SynchronousQueue SynchronousQueue 内部不维护存储空间，直接交付
 
 - 例3
 

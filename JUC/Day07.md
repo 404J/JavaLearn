@@ -228,4 +228,54 @@
 
 ## FutureTask, Future + Runnable
 
+- 例7
+
+  ```java
+  public class Test {
+    public static void main(String[] args) throws Exception {
+      ExecutorService eService = Executors.newCachedThreadPool();
+      Future<?> futureRunnable = eService.submit(() -> {
+        TimeUnit.sleep(1);
+      });
+      Future<?> futureCallable = eService.submit(() -> {
+        TimeUnit.sleep(2);
+        return 1;
+      });
+      FutureTask<Integer> futureTask = new FutureTask<>(()->{
+        TimeUnit.sleep(3);
+        return 2;
+      });
+      eService.submit(futureTask);
+      System.out.println("Runnable:" + futureRunnable.get());
+      System.out.println("Callable:" + futureCallable.get());
+      System.out.println("FutureTask:" + futureTask.get());
+    }
+  }
+  ```
+
 ## CompletableFuture, 任务管理器, 类似 js 中的 Promise
+
+- 例7
+
+  ```java
+  public class Test {
+    public static void main(String[] args) throws Exception {
+      CompletableFuture<?> cFuture1 = CompletableFuture.supplyAsync(() -> {
+        TimeUnit.sleep(1);
+        System.out.println("1s later~");
+        return "t1";
+      });
+      CompletableFuture<?> cFuture2 = CompletableFuture.supplyAsync(() -> {
+        TimeUnit.sleep(2);
+        System.out.println("2s later~");
+        return "t2";
+      });
+      CompletableFuture<?> cFuture3 = CompletableFuture.supplyAsync(() -> {
+        TimeUnit.sleep(3);
+        System.out.println("3s later~");
+        return "t3";
+      });
+      CompletableFuture.allOf(cFuture1, cFuture2, cFuture3).join();
+    }
+  }
+  ```

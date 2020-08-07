@@ -16,7 +16,19 @@
   7. handler: 线程数达到最大数，且任务队列中任务已满，执行的拒绝策略。JDK默认提供四种: CallerRunsPolicy, AbortPolicy, DiscardPolicy, DiscardOldestPolicy
 
   ```java
-  code
+  public class Test {
+    public static void main(String[] args) throws Exception {
+      ExecutorService eService = new ThreadPoolExecutor(2, 3, 1L, java.util.concurrent.TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(6),
+          Executors.defaultThreadFactory(), new ThreadPoolExecutor.CallerRunsPolicy());
+      for (int i = 0; i < 10; i++) {
+        int j = i;
+        eService.execute(() -> {
+          TimeUnit.sleep(1);
+          System.out.println("ThreadName: " + Thread.currentThread().getName() + ", number: " +j);
+        });
+      }
+    }
+  }
   ```
 
 ### SingleThreadExecutor
@@ -39,4 +51,4 @@
 
 ### WorkStealingPool
 
-### paralleStreamAPI
+### parallelStreamAPI

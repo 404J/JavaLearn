@@ -26,3 +26,19 @@
 
 - CPU 内存屏障
   使得指令通过一定顺序执行
+
+### volatile 实现内存屏障
+
+  1. 字节码层面：加了一个标记 ACC_VOLATILE
+
+  2. JVM 层面：JVM 对于 volatile 修饰的变量的读写操作都加了内存屏障，不允许指令重排序
+
+  3. OS 和硬件层面：省略
+
+### synchronized 实现方法
+
+  1. 字节码层面：monitorenter / monitorexit
+
+  2. JVM 层面：使用 C 语言
+
+  3. 硬件层面：lock 指令实现

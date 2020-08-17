@@ -2,18 +2,21 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 
+import com.J404.Hello;
+
 public class Test {
     public static void main(String[] args) throws Exception {
         MyClassLoader myClassLoader = new MyClassLoader();
-        Class clazz = myClassLoader.loadClass("Test.Hello");
-        System.out.println(clazz);
+        Class clazz = myClassLoader.loadClass("com.J404.Hello");
+        Hello hello = clazz.newInstance();
+        hello.m();
     }
 }
 
 class MyClassLoader extends ClassLoader {
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
-        File f = new File("E:/Java/JavaLearn/base/src", name.replace(".", "/").concat(".class"));
+        File f = new File("file:///Users/a404/Documents/code/Java/JavaLearn/base/src", name.replace(".", "/").concat(".class"));
         try {
             FileInputStream fis = new FileInputStream(f);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();

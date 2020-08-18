@@ -15,7 +15,36 @@
     继承 CalssLoader, 实现 findClass 方法, 使用方法 defineClass
 
     ```java
-    code
+    public class Test {
+        public static void main(String[] args) throws Exception {
+            MyClassLoader myClassLoader = new MyClassLoader();
+            Class clazz = myClassLoader.loadClass("com.J404.Hello");
+            Hello hello = (Hello) clazz.newInstance();
+            hello.m();
+        }
+    }
+
+    class MyClassLoader extends ClassLoader {
+        @Override
+        protected Class<?> findClass(String name) throws ClassNotFoundException {
+            File f = new File("file:///Users/a404/Documents/code/Java/JavaLearn/base/src", name.replace(".", "/").concat(".class"));
+            try {
+                FileInputStream fis = new FileInputStream(f);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                int b = 0;
+                while ((b=fis.read()) !=0) {
+                    baos.write(b);
+                }
+                byte[] bytes = baos.toByteArray();
+                baos.close();
+                fis.close();
+                return defineClass(name, bytes, 0, bytes.length);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return super.findClass(name);
+        }
+    }
     ```
 
 2. Linking

@@ -26,7 +26,7 @@
 
     - Resolution: 符号引用指向内存地址
 
-3. Initializing: 静态成员变量赋初始值
+3. Initializing: 静态成员变量赋初始值,执行静态语句块
 
     ```java
     // 课堂例子，区分静态成员赋默认值和初始值

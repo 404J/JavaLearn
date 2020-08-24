@@ -8,17 +8,78 @@
 
 - MESI 协议
 
-- 缓存行为不同线程 CPU 内存从 主内存读取数据的单位。如果两个变量位于同一个缓存行，不同线程间就需要维护其他未使用的变量，形成伪共享，会影响效率。缓存行对齐，可以提高效率
+- 缓存行为不同线程 CPU 内存从 主内存读取数据的单位(8 字节)。如果两个变量位于同一个缓存行，不同线程间就需要维护其他未使用的变量，形成伪共享，会影响效率。缓存行对齐，可以提高效率
 
   ```java
-  code
+  public class Test {
+      static class T {
+          public long p1, p2, p3, p4, p5, p6, p7; // padding
+          public volatile long x;
+      }
+      static T[] arr = new T[2];
+      static {
+          // padding 使其不位于同一缓存行
+          arr[0] = new T();
+          arr[1] = new T();
+      }
+      public static void main(String[] args) throws Exception {
+          long start = System.currentTimeMillis();
+          CountDownLatch countDownLatch = new CountDownLatch(2);
+          new Thread(() -> {
+              for (int i = 0; i < 1000000000L; i++) {
+                  arr[0].x = i;
+              }
+              countDownLatch.countDown();
+          }).start();
+          new Thread(() -> {
+              for (int i = 0; i < 1000000000L; i++) {
+                  arr[1].x = i;
+              }
+              countDownLatch.countDown();
+          }).start();
+          countDownLatch.await();
+          long end = System.currentTimeMillis();
+          System.out.println((end - start) / 1000.0);
+      }
+  }
   ```
 
 - CPU 指令的乱序执行
   指令间如果没有依赖关系，指令不一定会顺序执行
 
   ```java
-  code
+  public class Test {
+      private static int x = 0, y = 0;
+      private static int a = 0, b =0;
+      public static void main(String[] args) throws Exception {
+          int i = 0;
+          for(;;) {
+              i++;
+              x = 0; y = 0;
+              a = 0; b = 0;
+              Thread one = new Thread(new Runnable() {
+                  public void run() {
+                      a = 1;
+                      x = b;
+                  }
+              });
+
+              Thread other = new Thread(new Runnable() {
+                  public void run() {
+                      b = 1;
+                      y = a;
+                  }
+              });
+              one.start();other.start();
+              one.join();other.join();
+              String result = "第" + i + "次 (" + x + "," + y + "）";
+              if(x == 0 && y == 0) {
+                  System.err.println(result);
+                  break;
+              }
+          }
+      }
+  }
   ```
 
 - CPU 合并写

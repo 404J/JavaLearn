@@ -59,10 +59,29 @@
 
     ```java
     // 课堂例子，区分静态成员赋默认值和初始值
-    code
+    public class Test {
+        public static void main(String[] args) throws Exception {
+            System.out.println(P.i);
+            System.out.println(P.j); // 2
+        }
+        static class P {
+            final static int i = 1;
+            static P p = new P();
+            static int j = 2; // 变化：默认值 0 -> 初始值 2
+            static {
+                System.out.println("P");
+            }
+            private P () {
+                System.out.println(j); // 默认值 0
+                j ++; // 1
+            }
+        }
+    }
     ```
 
-4. 其他知识：jVM 中 java 执行方式：解释执行 + 热点代码编译执行
+## 编译
+
+  jVM 中 java 执行方式：解释执行 + 热点代码编译执行
 
 ## new Object
 

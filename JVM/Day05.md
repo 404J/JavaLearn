@@ -59,6 +59,6 @@
 
 ### Direct memory
 
-### Method area: 线程共享，1.8 之前叫做 PermSpace; 1.8 之后叫做 MetaSpace
+### Method area: 线程共享，1.8 之前叫做 PermSpace(设定大小后，不可变，会内存溢出); 1.8 之后叫做 MetaSpace
 
 ### Heap: 线程共享

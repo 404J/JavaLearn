@@ -7,7 +7,7 @@
 1. 物理上分为多个 region ，不是大的连续内存块，扫描时间短
 2. 逻辑上分 eden, survivor, old, humongous 分区
 3. 每个 region 不一定一直是某个分区, 每个 region 中有一个 rset （remembered set）, 记录这当前 region 中对象是否被别的 region 对象引用，没被记录的对象为无引用对象，可以直接回收
-4. 动态调整新老年代比例, 调整的依据是设定的 YGC 期望值，YGC 是 STW
+4. 动态调整新老年代比例, 调整的依据是设定的 STW 期望值，YGC 是 STW
 5. G1 当内存不够用的时候也会有FGC。尽量减少 G1 的 FGC，因为 G1 的 FGC 是单线程的，扫描内存大，回收时间长。可以设定 MixedGC 参数，当内存使用率达到该参数，JVM 采用 MixedGC, 该 GC 不分 eden 和 old 区，每个 region 满了就回收。MixedGC 类似 CMS
 
 ## 并发标记算法
@@ -28,4 +28,3 @@
 
 1. incremental update: 关注增量更新，黑色对象变化为灰色对象，下次扫面就会扫描到白色对象（CMS 使用）
 2. snapshot at the beginning: 关注引用的删除，灰色对象引用白色对象的引用消失时候，把引用推入 GC 堆栈，保证下次扫描就会扫描的白色对象（G1 使用，SATB 配合 Rset 效率很高，扫描白色对象时候，根据 Rset 查找引用）
-

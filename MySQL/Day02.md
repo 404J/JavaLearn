@@ -50,5 +50,8 @@ system > const > eq_ref > ref > fulltext > ref_or_null > index_merge > unique_su
   * 尽量使用主键索引，避免触发回表
   * 使用前缀索引
   * 使用索引列进行排序，where 和 orderBy 须符合最左匹配。且 orderBy 使用组合索引时候，排序的顺序需要一致
+  * in 与 or 推荐使用 in，当条件不是索引列是，性能差别很大
+  * 强制类型转化不会使用索引
+  * join 内部实现是 双层循环，不可多张表 join，join 字段尽量为索引列
 
 > 大量数据迁移到 MySQL 时候，可以先导入数据，然后开启索引，避免一边导数据，一边更新索引

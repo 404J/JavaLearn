@@ -22,6 +22,8 @@ select查询的序列号，包含一组数字，表示查询中执行select子�
 system > const > eq_ref > ref > fulltext > ref_or_null > index_merge > unique_subquery > index_subquery > range > index > ALL
 一般情况下，得保证查询至少达到range级别，最好能达到ref
 
+> ref 一般是使用到了普通索引，const 是使用了唯一索引。普通索引匹配到了数据还会继续扫描剩下索引
+
 ## 索引优化
 
 * 存储结构：InnoDB \ MyISAM 使用 B+ 树进行索引的存储，B+ 树只在叶子节点存储数据，其他节点只存储指针和索引值
@@ -52,6 +54,9 @@ system > const > eq_ref > ref > fulltext > ref_or_null > index_merge > unique_su
   * 使用索引列进行排序，where 和 orderBy 须符合最左匹配。且 orderBy 使用组合索引时候，排序的顺序需要一致
   * in 与 or 推荐使用 in，当条件不是索引列是，性能差别很大
   * 强制类型转化不会使用索引
-  * join 内部实现是 双层循环，不可多张表 join，join 字段尽量为索引列
+  * join 内部实现是 双层循环，不可多张表 join，join 字段尽量为索引列, 可将小表拿到内存转化成 map 与大表 join。mysql 可以调整 join_buffer_size (research join 的实现方式)
+
+* 索引的监控（使用统计）
+  * show status like "Handler_read%"
 
 > 大量数据迁移到 MySQL 时候，可以先导入数据，然后开启索引，避免一边导数据，一边更新索引

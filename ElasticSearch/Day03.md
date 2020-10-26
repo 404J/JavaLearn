@@ -98,9 +98,9 @@ GET /product/_search
 
 #### 全文检索
 
-> 相关度是如何计算的
+> 数据类型 text 和 keyword, text会被分词，keyword 不会被分词
 
-* match, 搜索条件分词，搜索的字段存储时候也会分词，只要有一个搜索分词存在与搜索的字段分词中，就会命中
+* match, 模糊查询。搜索条件分词，只要有一个搜索分词命中，就会命中
 GET /product/_search
 {
   "query": {
@@ -110,7 +110,7 @@ GET /product/_search
   }
 }
 
-* term, 搜索条件没有分词，搜索的字段存储时候也会分词，只有整个搜索存在与搜索的字段分词中，才会命中
+* term, 精确查询。搜索条件没有分词，只有整个搜索字段命中，才会命中
 GET /product/_search
 {
   "query": {
@@ -244,10 +244,52 @@ GET /product/_search
 
 ### Deep paging 问题
 
-* 描述：深度分页，查询数据较靠后，可能会涉及多个分页以及较多的数据
+* 描述：使用 from + size 实现 深度分页，查询数据较靠后，可能会涉及多个分页以及较多的数据，效率较低
 
-* 解决：使用 scroll search
+* 解决
+  * scroll search: 保存一份当前索引的快照，第一次查询生成一个 scroll_id 用于下一次查询，且有有效时间，占用空间大，需要手动清除，查询的数据不是实时性的。
+    GET /product/_search?scroll=1m
+    {
+      "query": {
+        "match_all": {}
+      },
+      "sort": [
+        "_doc"
+      ],
+      "size": 1
+    }
 
-### filter 会使用 cache
+    GET /_search/scroll
+    {
+      "scroll": "1m",
+      "scroll_id": "FGluY2x1ZGVfY29udGV4dF91dWlkDnF1ZXJ5VGhlbkZldGNoAxRncG5DWW5VQl93V0c5a2dobXV0ZgAAAAAAAAOmFlpWTFdoemtvU0g2a3B2YWNjYzVQbWcUZzVuQ1luVUJfd1dHOWtnaG11dnkAAAAAAAADpxZaVkxXaHprb1NINmtwdmFjY2M1UG1nFEc0TENZblVCNW5HS3JfbGhtNDc3AAAAAAAAA2MWZzBDY0s4akVTaHVOV0tDQ3RYc0Rydw=="
+    }
+  * search_after: 适用于下一页查询，实时，效率高。但是不适用于跳页
+    GET /product/_search
+    {
+      "sort": [
+        {
+          "price": {
+            "order": "desc"
+          }
+        }
+      ],
+      "size": 1
+    }
 
-* 原理？？？
+    GET /product/_search
+    {
+      "sort": [
+        {
+          "price": {
+            "order": "desc"
+          }
+        }
+      ],
+      "search_after": [2999],
+      "size": 1
+    }
+
+### filter 不会进行 score 计算，会被先执行。会使用 cache
+
+* cache 原理: 多次匹配会进行关键词的 cache , 会根据倒排索引生成一个 bitmap (二进制数组[0, 1, 1, 0])，当元数据发生更新时候，缓存也会进行更新

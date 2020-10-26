@@ -54,9 +54,9 @@ GET /product_map_test/_mapping
         }
       }
     }
-* doc_values: 是否生成正排索引, 不可改变。 当 type 为 text 时候，不会创建正排索引，所以不能用 text 类型字段进行排序和聚合操作
+* doc_values: 是否生成正排索引, 不可改变,使用 OS cache。 当 type 为 text 时候，不会被分词，不会创建正排索引，所以不能用 text 类型字段进行排序和聚合操作，但是可以使用 fielddata
 * search_analyzer: 设置搜索时候的分词器
-* fielddata: ????
+* fielddata: 默认为false。query time 创建，在jvm内存中创建，类似于正排索引。容易造成OOM
 
 ## 聚合查询
 

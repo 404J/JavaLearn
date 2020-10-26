@@ -6,7 +6,6 @@
 
 ### DSL
 
-
 GET /product/_search
 GET /product/_doc/4
 GET /product/_search?q=name:XIAOMI

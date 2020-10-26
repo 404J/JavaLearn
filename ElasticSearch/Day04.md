@@ -54,8 +54,9 @@ GET /product_map_test/_mapping
         }
       }
     }
-* doc_values: 是否生成正排索引
+* doc_values: 是否生成正排索引, 不可改变。 当 type 为 text 时候，不会创建正排索引，所以不能用 text 类型字段进行排序和聚合操作
 * search_analyzer: 设置搜索时候的分词器
+* fielddata: ????
 
 ## 聚合查询
 

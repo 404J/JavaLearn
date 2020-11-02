@@ -32,6 +32,15 @@ AOF, append only file。AOF 恢复数据较慢。
 * 体量大
 * 恢复慢
 
-> 解决
+> 解决: 重写 BGREWRITEAOF
 
-## 主从复制
+1. 4.0 之前，抵消和合并一些命令
+2. 4.0 之后，将老的数据以 RDB 方式写到 AOF 中，只记录增量数据
+
+### 持久化的代价
+
+RDB 和 AOF 都会先将数据写到操作系统内核的 buffer 中，然后内核 flash 到磁盘。持久化都会触发 IO，会降低 redis 的性能，所以 redis 提供了三种 flash 频率
+
+* no: 是否 flash 完全由操作系统决定
+* alwways: 每次都 flash 到磁盘
+* everysec: 每秒 flash 到磁盘

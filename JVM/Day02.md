@@ -60,23 +60,36 @@
     ```java
     // 课堂例子，区分静态成员赋默认值和初始值
     public class Test {
-        public static void main(String[] args) throws Exception {
-            System.out.println(P.i);
-            System.out.println(P.j); // 2
+
+        public static void main(String[] args) {
+            staticFunction();
         }
-        static class P {
-            final static int i = 1;
-            static P p = new P();
-            static int j = 2; // 变化：默认值 0 -> 初始值 2
-            static {
-                System.out.println("P");
-            }
-            private P () {
-                System.out.println(j); // 默认值 0
-                j ++; // 1
-            }
+        static Test st = new Test();
+
+        static {
+            System.out.println("1");
         }
+
+        static int b = 112;
+
+        {
+            System.out.println("5");
+        }
+
+        Test() {
+            System.out.println("3");
+            System.out.println("a=" + a + ",b=" + b);
+        }
+        public static void staticFunction() {
+            System.out.println("4");
+        }
+        {
+            System.out.println("2");
+        }
+
+        int a = 110;
     }
+
     ```
 
 ## 编译
@@ -86,3 +99,4 @@
 ## new Object
 
   非静态成员变量，首先分配内存，赋默认值，执行构造方法时候，赋初始值
+  > 动态代码块的执行触发点是 new 对象的时候，执行顺序是依次执行然后执行构造函数中的代码

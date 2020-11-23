@@ -51,7 +51,7 @@
 
     - Verification: 验证 class 文件格式
 
-    - Preparation: 类静态变量赋默认值，比如 int i = 0
+    - Preparation: 类静态变量赋默认值，比如 static int i = 0
 
     - Resolution: 符号引用指向内存地址
 

@@ -11,7 +11,7 @@
 ### string: help @string
 
 * SET [key] [value]
-* SET [key]
+* GET [key]
 * SET [key] [value] NX: 不存在时，允许 set。用于多个线程竞争场景
 * SET [key] [value] XX: 存在时，允许 set
 * GETSET [key] [value]: get old and set

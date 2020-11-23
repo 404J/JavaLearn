@@ -3,7 +3,17 @@
 ## AQS 源码
 
 - 源码
-  lock unlock 略...
+  lock(unfair lock)
+    1. CAS state, 如果成功，获得锁成功
+    2. acquire
+    3. tryAcquire -> CAS state -> 判断是否为重入锁
+    4. addWaiter -> CAS set tail -> 进队尾失败，则自旋 + CAS
+    5. acquireQueued -> 如果自己是第二个节点，自旋 tryAcquire -> shouldParkAfterFailedAcquire 清除自己前面无效的节点，然后把前面节点的 waitStatus 设置为 SIGNAL -> parkAndCheckInterrupt park 当前线程
+    6. selfInterrupt -> 如果 5 中期间线程被打断，则执行
+
+  unlock(unfair lock)
+    1. release -> tryRelease state 减 1 后如果 state 为 0 ，exclusiveOwnerThread 设置为 null
+    2. unparkSuccessor 找到自己后面有效的节点线程，unpark 它
 
 - VarHandle
   1. 普通属性可以进行原子性操作

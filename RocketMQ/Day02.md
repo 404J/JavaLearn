@@ -30,4 +30,11 @@
 
 ### Tag
 
+1. 消息对象添加 tag
+2. 消费者订阅消息时候添加 tag 字段的过滤信息
+
 ### Sql
+
+1. broker 配置中开启：enablePropertyFilter=true
+2. 消息对象 putUserProperty
+3. 消费者订阅消息的时候添加 MessageSelector 通过 sql 过滤消息

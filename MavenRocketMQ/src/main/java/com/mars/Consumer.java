@@ -14,11 +14,12 @@ public class Consumer {
     public static void main(String[] args) throws Exception {
         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("xxooGPC1");
         consumer.setNamesrvAddr("localhost:9876");
-        consumer.subscribe("xxooTopic", "tag-a");
+        consumer.subscribe("test-topic", "*");
         consumer.registerMessageListener(new MessageListenerConcurrently() {
             public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> list, ConsumeConcurrentlyContext consumeConcurrentlyContext) {
                 for(MessageExt messageExt : list) {
                     System.out.println(new String(messageExt.getBody()));
+                    System.out.println(new String(messageExt.getTransactionId()));
                 }
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
             }

@@ -38,7 +38,3 @@
 1. broker 配置中开启：enablePropertyFilter=true
 2. 消息对象 putUserProperty
 3. 消费者订阅消息的时候添加 MessageSelector 通过 sql 过滤消息
-
-## 事务消息
-
-> 分布式事务的提交：1. 2PC: 两阶段提交；2. TCC：三阶段提交；rocketMQ 采用 2PC

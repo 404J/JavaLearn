@@ -40,4 +40,4 @@ Kafka 为一个消息中间件，可用于服务之间的解耦。可靠，可�
 
 ## 课件
 
-[角色划分](../images/kafka.svg)
+![角色划分](../images/kafka.svg)

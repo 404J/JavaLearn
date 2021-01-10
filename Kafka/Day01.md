@@ -27,7 +27,7 @@ Kafka 为一个消息中间件，可用于服务之间的解耦。可靠，可�
 
 ### Partition
 
-  Partition 是物理划分，多个 Partition 存储同一个 Topic 的内容
+  Partition 是物理划分，多个 Partition 存储同一个 Topic 的内容，Partition 可以存在副本
 
 ### Producer
 
@@ -35,9 +35,13 @@ Kafka 为一个消息中间件，可用于服务之间的解耦。可靠，可�
 
 ### Consumer
 
-  Consumer 是消息的消费者，Consumer 和 Partition 之间可以一对一或者一对多，但是不可以一个 Partition 被多个 Consumer 消费，这样可以避免破坏消息的顺序性。但是如果希望一个 Partition 被多个 Consumer 消费，那么需要满足这多个 Consumer 在不同的 Group。
+  Consumer 是消息的消费者，Consumer 和 Partition 之间可以一对一或者一对多，但是不可以一个 Partition  中的消息被多个 Consumer 消费，这样可以避免破坏消息的顺序性。但是如果希望一个 Partition 中的消息被多个 Consumer 消费，那么需要满足这多个 Consumer 在不同的 Group。
   Consumer 中内存中维护了消息的 offset（消息的消费进度）。offset 的持久化：低版本是存储在 ZK 中，高版本是存储在内部的一个 Topic 中（推荐），也可以自定义存储在第三方。但是 offset 的更新时机会影响消息的丢失或者重复消费。如果先更新 offset 然后 Consumer 宕机，重启后消息丢失。如果先处理了消息，然后 Consumer 宕机没有更新 offset，重启后会造成消息的重复消费。
+
+### Group
+
+  多个 Consumer 可以位于同一个 Group，但是某个 Partition 中的消息只能被当前 Group 中的一个 Consumer 消费
 
 ## 课件
 
-![角色划分](../images/kafka.svg)
+![角色划分](../images/kafka01.svg)

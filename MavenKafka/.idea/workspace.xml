@@ -2,13 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="02618b48-aafe-4ab3-b324-65ea7da7d872" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/mars/Consumer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/mars/Producer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Kafka/Day03.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Kafka/Day03.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mars/Producer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mars/Producer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/mars/Consumer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mars/Consumer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/mars/Producer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/mars/Producer.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,8 +78,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Consumer" />
         <item itemvalue="Application.Producer" />
+        <item itemvalue="Application.Consumer" />
       </list>
     </recent_temporary>
   </component>
@@ -96,7 +93,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1610365971697</updated>
-      <workItem from="1610365972955" duration="6013000" />
+      <workItem from="1610365972955" duration="7566000" />
     </task>
     <servers />
   </component>
@@ -112,25 +109,29 @@
       <screen x="0" y="25" width="1440" height="823" />
     </state>
     <state x="184" y="95" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.25.1440.823@0.25.1440.823" timestamp="1610373065056" />
-    <state width="1398" height="286" key="GridCell.Tab.0.bottom" timestamp="1610375421093">
+    <state width="1398" height="225" key="GridCell.Tab.0.bottom" timestamp="1610375504031">
       <screen x="0" y="25" width="1440" height="823" />
     </state>
-    <state width="1398" height="286" key="GridCell.Tab.0.bottom/0.25.1440.823@0.25.1440.823" timestamp="1610375421093" />
-    <state width="1398" height="286" key="GridCell.Tab.0.center" timestamp="1610375421092">
+    <state width="1398" height="225" key="GridCell.Tab.0.bottom/0.25.1440.823@0.25.1440.823" timestamp="1610375504031" />
+    <state width="1398" height="225" key="GridCell.Tab.0.center" timestamp="1610375504030">
       <screen x="0" y="25" width="1440" height="823" />
     </state>
-    <state width="1398" height="286" key="GridCell.Tab.0.center/0.25.1440.823@0.25.1440.823" timestamp="1610375421092" />
-    <state width="1398" height="286" key="GridCell.Tab.0.left" timestamp="1610375421091">
+    <state width="1398" height="225" key="GridCell.Tab.0.center/0.25.1440.823@0.25.1440.823" timestamp="1610375504030" />
+    <state width="1398" height="225" key="GridCell.Tab.0.left" timestamp="1610375504029">
       <screen x="0" y="25" width="1440" height="823" />
     </state>
-    <state width="1398" height="286" key="GridCell.Tab.0.left/0.25.1440.823@0.25.1440.823" timestamp="1610375421091" />
-    <state width="1398" height="286" key="GridCell.Tab.0.right" timestamp="1610375421092">
+    <state width="1398" height="225" key="GridCell.Tab.0.left/0.25.1440.823@0.25.1440.823" timestamp="1610375504029" />
+    <state width="1398" height="225" key="GridCell.Tab.0.right" timestamp="1610375504031">
       <screen x="0" y="25" width="1440" height="823" />
     </state>
-    <state width="1398" height="286" key="GridCell.Tab.0.right/0.25.1440.823@0.25.1440.823" timestamp="1610375421092" />
+    <state width="1398" height="225" key="GridCell.Tab.0.right/0.25.1440.823@0.25.1440.823" timestamp="1610375504031" />
     <state x="208" y="25" width="1024" height="823" key="SettingsEditor" timestamp="1610366207903">
       <screen x="0" y="25" width="1440" height="823" />
     </state>
     <state x="208" y="25" width="1024" height="823" key="SettingsEditor/0.25.1440.823@0.25.1440.823" timestamp="1610366207903" />
+    <state x="385" y="172" width="670" height="676" key="search.everywhere.popup" timestamp="1610625752475">
+      <screen x="0" y="25" width="1440" height="823" />
+    </state>
+    <state x="385" y="172" width="670" height="676" key="search.everywhere.popup/0.25.1440.823@0.25.1440.823" timestamp="1610625752475" />
   </component>
 </project>

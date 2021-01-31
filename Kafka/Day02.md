@@ -4,10 +4,10 @@
 
 1. 启动 Zookeeper
 2. 修改 Kafka 的配置文件 server.properties
-  broker.id=0
-  listeners=PLAINTEXT://localhost:9092
-  log.dirs=/usr/local/Cellar/kafka/data/kafka
-  zookeeper.connect=localhost:2181/kafka
+    broker.id=0
+    listeners=PLAINTEXT://localhost:9092
+    log.dirs=/usr/local/Cellar/kafka/data/kafka
+    zookeeper.connect=localhost:2181/kafka
 3. 启动 Broker: kafka-server-start.sh ../config/server.properties
 
 ## Topic action
@@ -24,6 +24,7 @@
 
 - create
   kafka-console-consumer.sh --bootstrap-server localhost:9093 --topic [topicName] --group [groupName]
+  
   > 当同一个 Group 的 Consumer 个数大于 Partition 的个数时，超过的个数的 Consumer 不会接受到数据
 
 ## Producer action

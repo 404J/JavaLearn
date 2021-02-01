@@ -1,9 +1,6 @@
 package com.mars;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
@@ -15,7 +12,8 @@ public class OSFileIO {
     public static void main(String[] args) throws Exception {
 //        basicFileIO();
 //        bufferedFileIO();
-        randomAccessFileIO();
+//        randomAccessFileIO();
+        whatIsByteBuffer();
     }
 
     public static void basicFileIO() throws Exception {
@@ -70,5 +68,26 @@ public class OSFileIO {
             Thread.sleep(200);
             System.out.print(((char)buffer.get(i)));
         }
+    }
+
+    public static void whatIsByteBuffer() {
+//        ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(1024);
+        byteBuffer.put("abcdef".getBytes());
+        System.out.println("---------- put abcdef ----------");
+        System.out.println("buffer: " + byteBuffer);
+
+        byteBuffer.flip(); // 读写切换
+        System.out.println("---------- flip ----------");
+        System.out.println("buffer: " + byteBuffer);
+
+        byte b = byteBuffer.get();
+        System.out.println("---------- get " + new String(new byte[]{b}) + " ----------");
+        System.out.println("buffer: " + byteBuffer);
+
+        byteBuffer.compact();
+        System.out.println("---------- compact ----------");
+        System.out.println("buffer: " + byteBuffer);
+
     }
 }

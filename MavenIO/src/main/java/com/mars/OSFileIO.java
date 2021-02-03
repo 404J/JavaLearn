@@ -46,6 +46,7 @@ public class OSFileIO {
         System.out.println("---------------- write at begin ----------------");
         System.in.read();
 
+        // lseek
         randomAccessFile.seek(5);
         randomAccessFile.write("ooxx".getBytes());
         System.out.println(randomAccessFile.getFilePointer());
@@ -53,9 +54,11 @@ public class OSFileIO {
         System.in.read();
 
         FileChannel channel = randomAccessFile.getChannel();
+        // mmap(NULL, 1024, PROT_READ|PROT_WRITE, MAP_SHARED, 4, 0) = 0x7f60f839a000
         MappedByteBuffer map = channel.map(FileChannel.MapMode.READ_WRITE, 0, 1024);
         map.put("map put".getBytes());
         System.out.println("---------------- map put ----------------");
+        // msync(0x7f60f839a000, 1024, MS_SYNC)    = 0
         map.force();
         System.in.read();
 

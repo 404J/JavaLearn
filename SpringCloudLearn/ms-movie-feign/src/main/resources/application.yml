@@ -1,0 +1,70 @@
+server:
+  port: 18004
+
+spring:
+  application:
+    name: ms-movie-feign
+  zipkin:
+    base-url: http://localhost:9411
+  sleuth:
+    sampler:
+      # 采样率，模式0.1，也就是10%，为了便于观察效果，改为1.0，也就是100%。生产环境建议保持默认。
+      probability: 1.0
+
+eureka:
+  client:
+    service-url:
+      # 指定eureka server通信地址，注意/eureka/小尾巴不能少
+      defaultZone: http://peer1:18000/eureka/
+#      defaultZone: http://peer1:18000/eureka/, http://peer2:18001/eureka/
+  instance:
+    # 是否注册IP到eureka server，如不指定或设为false，那就会注册主机名到eureka server
+    prefer-ip-address: true
+
+feign:
+  client:
+    config:
+      mc-user:
+        loggerLevel: full
+#      default:
+#        connectTimeout: 2000
+#        readTimeout: 2000
+  compression:
+    request:
+      enabled: true
+    response:
+      enabled: true
+  hystrix:
+    enabled: true
+
+# ribbon 配置
+# ribbon 和 feign 同时设置超时时间，ribbon的配置会被覆盖，一般不设置 feign 的超时时间
+# ribbon 默认的负载均衡策略是轮询，当一次请求超时，会进行对同一台实例 MaxAutoRetries 次的重试，如果没有成功，重试其他实例
+# 其他实例的最大次数为 MaxAutoRetriesNextServer。当一台实例多次请求超时，ribbon 会将该实例暂时
+# 标记为不可用，满足一定条件会进行重新请求该实例
+ribbon:
+  ReadTimeout: 2000 #业务逻辑超时时间(ms)
+  ConnectTimeout: 2000 #连接超时时间(ms)
+  MaxAutoRetries: 3 #同一台实例最大重试次数,不包括首次调用
+  MaxAutoRetriesNextServer: 3 #重试负载均衡其他的实例最大重试次数,不包括首次调用
+  OkToRetryOnAllOperations: false #是否所有操作都重试
+
+# hystrix 配置
+# hystrix 可以配置核心线程数，默认为10，当并发达到核心线程数的时候，会进行降级处理，以达到快速失败，避免影响 feign 客户端
+# 当一定的窗口时间内 feign 的失败率达到一定的阈值，hystrix 会打开断路器（Hystrix circuit short-circuited and is OPEN）
+# 断路器打开后的一定时间后，会变成半开状态，会进行重试，如果重试成功，断路器关闭
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            # hystrix 的线程超时时间，一般的原则为当 ribbon 的重试机制失败后，进行超时的降级处理
+            # 计算公式为 （MaxAutoRetries + MaxAutoRetriesNextServer + 2）* ReadTimeout <= timeoutInMilliseconds
+            timeoutInMilliseconds: 16000
+
+logging:
+  level:
+    com.mars.UserFeignClient: debug
+    root: INFO
+    org.springframework.cloud.sleuth: DEBUG

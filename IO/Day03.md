@@ -35,12 +35,12 @@
 
 主线程接收 socket 连接（accept() 为阻塞方法）：
 
-- socket(PF_INET, SOCK_STREAM, IPPROTO_IP) = 5
-- bind(5, {sa_family=AF_INET, sin_port=htons(9090), sin_addr=inet_addr("0.0.0.0")}, 16) = 0
-- listen(5, 50)
-- accept(5, {sa_family=AF_INET, sin_port=htons(54422), sin_addr=inet_addr("172.20.0.3")}, [16]) = 6
-- clone(child_stack=0x7f1f01430fb0, flags=CLONE_VM|CLONE_FS|CLONE_FILES|CLONE_SIGHAND|CLONE_THREAD|CLONE_SYSVSEM|CLONE_SETTLS|CLONE_PARENT_SETTID|CLONE_CHILD_CLEARTID, parent_tidptr=0x7f1f014319d0, tls=0x7f1f01431700, child_tidptr=0x7f1f014319d0) = 6756
+- socket(PF_INET, SOCK_STREAM, IPPROTO_IP) = 5 --------> 获取一个 socket fd
+- bind(5, {sa_family=AF_INET, sin_port=htons(9090), sin_addr=inet_addr("0.0.0.0")}, 16) = 0 --------> bind 9090
+- listen(5, 50) --------> 监听 9090
+- accept(5, {sa_family=AF_INET, sin_port=htons(54422), sin_addr=inet_addr("172.20.0.3")}, [16]) = 6 --------> 阻塞返回连接的 socket
+- clone(child_stack=0x7f1f01430fb0, flags=CLONE_VM|CLONE_FS|CLONE_FILES|CLONE_SIGHAND|CLONE_THREAD|CLONE_SYSVSEM|CLONE_SETTLS|CLONE_PARENT_SETTID|CLONE_CHILD_CLEARTID, parent_tidptr=0x7f1f014319d0, tls=0x7f1f01431700, child_tidptr=0x7f1f014319d0) = 6756 --------> clone 一个新的线程处理新的 socket 连接的数据接收
 
 从线程读取 socket 的数据（recvfrom() 为阻塞方法）:
 
-- recvfrom(6, "hello\n", 8192, 0, NULL, NULL) = 6
+- recvfrom(6, "hello\n", 8192, 0, NULL, NULL) = 6 --------> 阻塞返回 socket 的发送数据

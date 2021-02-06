@@ -17,6 +17,6 @@
 - listen(4, 50) --------> 监听 9090
 - fcntl(4, F_SETFL, O_RDWR|O_NONBLOCK)    = 0 --------> 使得 accept 为非阻塞
 - accept(4, 0x7f54600ce8b0, 0x7f5467f8568c) = -1 EAGAIN (Resource temporarily unavailable) --------> 非阻塞返回无连接
-- accept(4, {sa_family=AF_INET, sin_port=htons(54424), sin_addr=inet_addr("172.20.0.3")}, [16]) = 5 --------> 非阻塞返回有连接
+- accept(4, {sa_family=AF_INET, sin_port=htons(54424), sin_addr=inet_addr("172.20.0.3")}, [16]) = 5 --------> 非阻塞返回连接的 fd
 - fcntl(5, F_SETFL, O_RDWR|O_NONBLOCK)    = 0 --------> 使得 read 为非阻塞
-- read(5, "123\n", 4096)                  = 4 --------> 非阻塞返回 socket 有数据
+- read(5, "123\n", 4096)                  = 4 --------> 非阻塞返回 socket 数据

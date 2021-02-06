@@ -26,4 +26,18 @@
 
 ### EPOLL
 
-EPOLL 是 POLL 的升级版本，通过 epoll_create 返回一个 epfd, 然后调用 epoll_ctl 向内核传递一个 fd, 该 fd 放到一个红黑树中，当有 IO 中断的时候，内核处理完相关 buffer 后，并把该从红黑树中的 fd 放到一个 链表中，调用 epoll_wait 拿到哪些 fd 是可读的，就不会有大量的轮询
+EPOLL 是 POLL 的升级版本，通过 epoll_create 返回一个 epfd, 然后调用 epoll_ctl 向内核传递一个 fd, 该 fd 放到一个红黑树中，当有 IO 中断的时候，内核处理完相关 buffer 后，并把该从红黑树中的 fd 放到一个 链表中，调用 epoll_wait 拿到哪些 fd 是可读的，就不会有大量的轮询和 fd 的 copy
+
+- socket(PF_INET6, SOCK_STREAM, IPPROTO_IP) = 4 --------> 获取 socket server 的 fd
+- bind(4, {sa_family=AF_INET, sin_port=htons(9090), sin_addr=inet_addr("0.0.0.0")}, 16) = 0 --------> bind 9090
+- listen(4, 50) --------> 监听 9090
+- fcntl(4, F_SETFL, O_RDWR|O_NONBLOCK)    = 0 --------> 使得 accept 为非阻塞
+- epoll_create(256)                       = 7 --------> 打开一个 epoll fd
+- epoll_ctl(7, EPOLL_CTL_ADD, 4, {EPOLLIN, {u32=4, u64=6866409781423243268}}) = 0 --------> 将 socket server 的 fd 放到 epoll 的红黑树中
+- epoll_wait(7, [{EPOLLIN, {u32=4, u64=6866409781423243268}}], 8192, -1) = 1 --------> 返回有状态的 fd
+
+- accept(4, {sa_family=AF_INET, sin_port=htons(43938), sin_addr=inet_addr("127.0.0.1")}, [16]) = 8 --------> 非阻塞的返回连接的 socket fd
+- fcntl(8, F_SETFL, O_RDWR|O_NONBLOCK)    = 0 --------> 使得 read 为非阻塞
+- epoll_ctl(7, EPOLL_CTL_ADD, 8, {EPOLLIN, {u32=8, u64=5260338011266088968}}) = 0 --------> 将 socket 的 fd 放到 epoll 的红黑树中
+- epoll_wait(7, [{EPOLLIN, {u32=8, u64=5260338011266088968}}], 8192, -1) = 1 --------> 返回有状态的 fd
+- read(8, "hello\n", 1024)                = 6 --------> 非阻塞返回 socket 的数据

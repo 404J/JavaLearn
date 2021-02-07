@@ -10,7 +10,7 @@ import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.Set;
 
-public class SocketMultiplexingIOServer {
+public class SocketMultiplexingIOServerV1 {
 
     private ServerSocketChannel serverSocketChannel;
 
@@ -18,7 +18,7 @@ public class SocketMultiplexingIOServer {
     private Selector selector;
 
     public static void main(String[] args) {
-        SocketMultiplexingIOServer socketMultiplexingIOServer = new SocketMultiplexingIOServer();
+        SocketMultiplexingIOServerV1 socketMultiplexingIOServer = new SocketMultiplexingIOServerV1();
         socketMultiplexingIOServer.initServer();
         socketMultiplexingIOServer.processing();
     }

@@ -51,15 +51,12 @@ public class SocketMultiplexingIOServerV2 {
     private void processing() {
         try {
             while (true) {
-                Set<SelectionKey> keys = selector.keys();
-                System.out.println(keys.size() + " size");
-
                 /*
                 select
                 1. 如果是 select 或者 poll 模型，调用内核的 select()\poll()
                 2. 如果是 epoll 模型，调用内核的 epoll_wait()
                  */
-                while (selector.select() > 0) {
+                while (selector.select(50) > 0) {
                     //返回的有状态的 fd 集合
                     Set<SelectionKey> selectionKeys = selector.selectedKeys();
                     Iterator<SelectionKey> iter = selectionKeys.iterator();
@@ -69,8 +66,11 @@ public class SocketMultiplexingIOServerV2 {
                         if (selectionKey.isAcceptable()) {
                             acceptHandler(selectionKey);
                         } else if (selectionKey.isReadable()) {
+                            selectionKey.cancel();
                             readHandler(selectionKey);
-                        } else if (selectionKey.isReadable()) {
+                        } else if (selectionKey.isWritable()) {
+                            // 对应 epoll 模型中的 epoll_ctl()
+                            selectionKey.cancel();
                             writeHandler(selectionKey);
                         }
                     }
@@ -102,23 +102,42 @@ public class SocketMultiplexingIOServerV2 {
     }
 
     private void readHandler(SelectionKey selectionKey) {
-        try {
-            SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
-            ByteBuffer buffer = (ByteBuffer) selectionKey.attachment();
-            int i = socketChannel.read(buffer);
-            if (i > 0) {
-                buffer.flip();
-                byte[] dst = new byte[buffer.limit()];
-                buffer.get(dst);
-                String result = new String(dst);
-                System.out.println("Read data from " + socketChannel.getRemoteAddress() + " : " + result);
-                buffer.clear();
+        new Thread(() -> {
+            try {
+                SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
+                ByteBuffer buffer = (ByteBuffer) selectionKey.attachment();
+                int i = socketChannel.read(buffer);
+                if (i > 0) {
+                    buffer.flip();
+                    byte[] dst = new byte[buffer.limit()];
+                    buffer.get(dst);
+                    String result = new String(dst);
+                    System.out.println("Read data from " + socketChannel.getRemoteAddress() + " : " + result);
+                    buffer.clear();
+                    socketChannel.register(selector, SelectionKey.OP_WRITE, buffer);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        }).start();
     }
 
     private void writeHandler(SelectionKey selectionKey) {
+        new Thread(() -> {
+            try {
+                SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
+                ByteBuffer buffer = (ByteBuffer) selectionKey.attachment();
+                buffer.clear();
+                String data = "Send data to " + socketChannel.getRemoteAddress();
+                buffer.put(data.getBytes());
+                buffer.flip();
+                while (buffer.hasRemaining()) {
+                    socketChannel.write(buffer);
+                }
+                socketChannel.register(selector, SelectionKey.OP_READ, buffer);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 }

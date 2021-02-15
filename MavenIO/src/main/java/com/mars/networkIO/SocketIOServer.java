@@ -1,4 +1,4 @@
-package com.mars;
+package com.mars.networkIO;
 
 import java.io.BufferedReader;
 import java.io.IOException;

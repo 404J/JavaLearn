@@ -1,4 +1,4 @@
-package com.mars;
+package com.mars.networkIO;
 
 import java.io.*;
 import java.net.Socket;

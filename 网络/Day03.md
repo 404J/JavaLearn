@@ -1,6 +1,6 @@
 # Day03
 
-## LVS DR 模型搭建
+## LVS DR 模型 负载均衡器 搭建
 
 node01:
   ifconfig ens33:1 192.168.63.100/24

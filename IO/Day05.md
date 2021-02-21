@@ -16,7 +16,7 @@
 
 传递多个 fds, 获取到哪些 fd 是 ready，但是个数是有限制的
 
-> 内核如何知道 fd 是否有数据？ 当有 IO 的时候，会产生 IO中断，此时 CPU 进行处理，内核收到 callback，进行 fd 的 buffer 处理，然后调用 select 时候会进行轮询判断是否有 buffer，进而返回哪些 fd 可读
+> 内核如何知道 fd 是否有数据？ 当有 IO 的时候，会产生 IO 中断，此时 CPU 进行处理，内核收到 callback，进行 fd 的 buffer 处理，然后调用 select 时候会进行轮询判断是否有 buffer，进而返回哪些 fd 可读
 
 ### POLL
 

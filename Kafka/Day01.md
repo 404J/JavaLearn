@@ -31,7 +31,7 @@ Kafka 为一个消息中间件，可用于服务之间的解耦。可靠，可�
 
 ### Producer
 
-  Producer 是消息的生产者，Producer 通过向 Broker 获取集群信息。Producer 和Partition 可以多对多。当多个 Producer 进行消息的生产的时候，需要注意数据推送的顺序性，可以通过分布式锁实现多个 Producer 向同一个 Partition 丢数据
+  Producer 是消息的生产者，Producer 通过向 Broker 获取集群信息。Producer 和 Partition 可以多对多。当多个 Producer 进行消息的生产的时候，需要注意数据推送的顺序性，可以通过分布式锁实现多个 Producer 向同一个 Partition 丢数据
 
 ### Consumer
 

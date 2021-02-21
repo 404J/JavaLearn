@@ -10,4 +10,4 @@
 
 ## 多路复用器 - 多线程 - 多 selector 模型 （simpleNetty）
 
-每个线程对应一个 selector, selector 的个数为对应的 cpu 核树，每个线程内部为顺序执行，进行 accept 和 R/W 操作，避免了 SocketMultiplexingIOServerV2 中的频繁的 cancel 系统调用。
+每个线程对应一个 selector, selector 的个数为对应的 cpu 核数，每个线程内部为顺序执行，进行 accept 和 R/W 操作，避免了 SocketMultiplexingIOServerV2 中的频繁的 cancel 系统调用。

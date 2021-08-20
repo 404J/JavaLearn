@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="02618b48-aafe-4ab3-b324-65ea7da7d872" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1mvF5AVuR6Oo7YVgVx5WHW4MWof" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
+  </component>
+  <component name="RebelAgentSelection">
+    <selection>jr</selection>
+  </component>
+  <component name="RunManager" selected="Application.Producer">
+    <configuration name="Consumer" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.mars.Consumer" />
+      <module name="MavenKafka" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.mars.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Producer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.mars.Producer" />
+      <module name="MavenKafka" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.mars.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.Consumer" />
+      <item itemvalue="Application.Producer" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Producer" />
+        <item itemvalue="Application.Consumer" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="02618b48-aafe-4ab3-b324-65ea7da7d872" name="Default Changelist" comment="" />
+      <created>1610365971697</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1610365971697</updated>
+      <workItem from="1610365972955" duration="8001000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="208" y="25" width="1024" height="823" key="#Project_Structure" timestamp="1610366505729">
+      <screen x="0" y="25" width="1440" height="823" />
+    </state>
+    <state x="208" y="25" width="1024" height="823" key="#Project_Structure/0.25.1440.823@0.25.1440.823" timestamp="1610366505729" />
+    <state x="184" y="95" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1610373065056">
+      <screen x="0" y="25" width="1440" height="823" />
+    </state>
+    <state x="184" y="95" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.25.1440.823@0.25.1440.823" timestamp="1610373065056" />
+    <state width="1398" height="225" key="GridCell.Tab.0.bottom" timestamp="1610975808751">
+      <screen x="0" y="25" width="1440" height="823" />
+    </state>
+    <state width="1398" height="225" key="GridCell.Tab.0.bottom/0.25.1440.823@0.25.1440.823" timestamp="1610975808750" />
+    <state width="1398" height="225" key="GridCell.Tab.0.center" timestamp="1610975808750">
+      <screen x="0" y="25" width="1440" height="823" />
+    </state>
+    <state width="1398" height="225" key="GridCell.Tab.0.center/0.25.1440.823@0.25.1440.823" timestamp="1610975808750" />
+    <state width="1398" height="225" key="GridCell.Tab.0.left" timestamp="1610975808749">
+      <screen x="0" y="25" width="1440" height="823" />
+    </state>
+    <state width="1398" height="225" key="GridCell.Tab.0.left/0.25.1440.823@0.25.1440.823" timestamp="1610975808749" />
+    <state width="1398" height="225" key="GridCell.Tab.0.right" timestamp="1610975808750">
+      <screen x="0" y="25" width="1440" height="823" />
+    </state>
+    <state width="1398" height="225" key="GridCell.Tab.0.right/0.25.1440.823@0.25.1440.823" timestamp="1610975808750" />
+    <state x="208" y="25" width="1024" height="823" key="SettingsEditor" timestamp="1610366207903">
+      <screen x="0" y="25" width="1440" height="823" />
+    </state>
+    <state x="208" y="25" width="1024" height="823" key="SettingsEditor/0.25.1440.823@0.25.1440.823" timestamp="1610366207903" />
+    <state x="385" y="172" width="670" height="676" key="search.everywhere.popup" timestamp="1610625752475">
+      <screen x="0" y="25" width="1440" height="823" />
+    </state>
+    <state x="385" y="172" width="670" height="676" key="search.everywhere.popup/0.25.1440.823@0.25.1440.823" timestamp="1610625752475" />
+  </component>
+</project>
